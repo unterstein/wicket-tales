@@ -1,5 +1,6 @@
 package org.wickettales.request.mapper;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.handler.RenderPageRequestHandler;
@@ -36,7 +37,20 @@ import org.apache.wicket.util.ClassProvider;
  * the cached page and the {@link PageParameters} of the current request. If a
  * difference between this two {@link PageParameters} are recognized, this
  * mapper redirects to a fresh bookmarkable instance of the current requested
- * page.
+ * page. <br/>
+ * <br/>
+ * To use this mapper to mount your pages, you must declare the mapper
+ * programmatically in your {@link Application} by overwriting the
+ * "public void init()" method, like shown below:
+ * 
+ * <pre>
+ * &#064;Override
+ * public void init() {
+ *     super.init();
+ *     // Use our own mapper to mount the mountpage
+ *     mount(new PageParameterAwareMountedMapper(&quot;Home&quot;, HomePage.class));
+ * }
+ * </pre>
  * 
  * @author <a href="mailto:unterstein@me.com">Johannes Unterstein</a>
  * 

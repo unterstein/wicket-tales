@@ -1,6 +1,7 @@
 package org.wickettales;
 
 import org.apache.wicket.protocol.http.WebApplication;
+import org.wickettales.request.mapper.PageParameterAwareMountedMapper;
 
 /**
  * Application object for your web application. If you want to run this
@@ -24,6 +25,7 @@ public class WicketApplication extends WebApplication {
     public void init() {
         super.init();
 
-        // add your configuration here
+        // Use our own mapper to mount the mountpage
+        mount(new PageParameterAwareMountedMapper("Home", HomePage.class));
     }
 }
