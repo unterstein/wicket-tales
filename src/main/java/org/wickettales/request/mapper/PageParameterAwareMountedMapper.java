@@ -3,6 +3,7 @@ package org.wickettales.request.mapper;
 import org.apache.wicket.Application;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.component.IRequestablePage;
+import org.apache.wicket.request.handler.PageProvider;
 import org.apache.wicket.request.handler.RenderPageRequestHandler;
 import org.apache.wicket.request.mapper.MountedMapper;
 import org.apache.wicket.request.mapper.info.PageInfo;
@@ -76,20 +77,25 @@ public class PageParameterAwareMountedMapper extends MountedMapper {
     }
 
     @Override
-    protected IRequestHandler processHybrid(PageInfo pageInfo, Class<? extends IRequestablePage> pageClass, PageParameters pageParameters,
-            Integer renderCount) {
+    protected IRequestHandler processHybrid(PageInfo pageInfo, Class<? extends IRequestablePage> pageClass, PageParameters pageParameters, Integer renderCount) {
         IRequestHandler handler = super.processHybrid(pageInfo, pageClass, pageParameters, renderCount);
         if (handler instanceof RenderPageRequestHandler) {
             // in the current implementation (wicket 1.5.6) super.processHybrid
             // returns a RenderPageRequestHandler
             RenderPageRequestHandler renderPageHandler = (RenderPageRequestHandler) handler;
-            PageParameters newPageParameters = renderPageHandler.getPageParameters();
-            PageParameters oldPageParameters = renderPageHandler.getPageProvider().getPageInstance().getPageParameters();
-            // if we recognize a change between the page parameter of the loaded
-            // page and the page parameter of the current request, we redirect
-            // to a fresh bookmarkable instance of that page.
-            if (!PageParameters.equals(oldPageParameters, newPageParameters)) {
-                handler = processBookmarkable(pageClass, newPageParameters);
+            if (renderPageHandler.getPageProvider() instanceof PageProvider) {
+                PageProvider provider = (PageProvider) renderPageHandler.getPageProvider();
+                // This check is necessary to prevent a RestartResponseAtInterceptPageException at the wrong time in request cycle
+                if (provider.hasPageInstance()) {
+                    PageParameters newPageParameters = renderPageHandler.getPageParameters();
+                    PageParameters oldPageParameters = renderPageHandler.getPageProvider().getPageInstance().getPageParameters();
+                    // if we recognize a change between the page parameter of the loaded
+                    // page and the page parameter of the current request, we redirect
+                    // to a fresh bookmarkable instance of that page.
+                    if (!PageParameters.equals(oldPageParameters, newPageParameters)) {
+                        handler = processBookmarkable(pageClass, newPageParameters);
+                    }
+                }
             }
         }
         return handler;
