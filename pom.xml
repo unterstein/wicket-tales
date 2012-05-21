@@ -5,10 +5,9 @@
   <artifactId>wicket-tales</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <!-- TODO project name -->
-  <name>quickstart</name>
-  <description></description>
-  <url>http://www.micromata.de</url>
+  <name>Real-Life Wicket Tales</name>
+  <description>... by Real-Life Wicket Users</description>
+  <url>http://www.wicket-tales.org</url>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
