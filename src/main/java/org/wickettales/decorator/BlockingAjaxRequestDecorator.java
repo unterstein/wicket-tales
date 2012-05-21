@@ -34,17 +34,17 @@ import org.apache.wicket.ajax.IAjaxCallDecorator;
  * <b>Usage:</b> <br/>
  * 
  * <pre>
- * AjaxLink&lt;Void&gt; blockingLink = new AjaxLink&lt;Void&gt;(&quot;blockingLink&quot;) {
+ * AjaxLink<Void> blockingLink = new AjaxLink<Void>("blockingLink") {
  *     private static final long serialVersionUID = 6361089658947809022L;
  * 
- *     &#064;Override
+ *     @Override
  *     public void onClick(AjaxRequestTarget target) {
  *         // do something reasonable
  *     }
  * 
- *     &#064;Override
+ *     @Override
  *     protected IAjaxCallDecorator getAjaxCallDecorator() {
- *         return new BlockingAjaxCallDecorator(); // &lt;&lt;--- This is important ;)
+ *         return new BlockingAjaxCallDecorator(); // <<--- This is important ;)
  *     }
  * };
  * add(blockingLink);
